@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+}
+
+#center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #1677ff, #09203f);
+}
+
+.hero {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px 36px 28px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.hero form {
+  max-width: none !important;
+}
+
+.Signin {
+  display: block;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.Signin h1 {
+  margin: 0;
+  color: #172b4d;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.Signin::after {
+  content: 'Sign in to manage your medical inventory';
+  display: block;
+  margin-top: 8px;
+  color: #7a869a;
+  font-size: 14px;
+}
+
+.hero .ant-form-item {
+  margin-bottom: 20px;
+}
+
+.hero .ant-input-affix-wrapper,
+.hero .ant-input {
+  min-height: 46px;
+  border-radius: 9px;
+}
+
+.hero .ant-input-affix-wrapper {
+  padding: 0 14px;
+}
+
+.hero .ant-input-prefix {
+  margin-right: 10px;
+  color: #1677ff;
+}
+
+.hero .ant-checkbox-wrapper {
+  color: #5c6b7a;
+  font-size: 14px;
+}
+
+.hero .ant-btn {
+  height: 46px;
+  border-radius: 9px;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 5px 12px rgba(22, 119, 255, 0.25);
+  transition: all 0.2s ease;
+}
+
+.hero .ant-btn:hover {
+  transform: translateY(-1px);
+}
+
+#spacer,
+.ticks {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  #center {
+    padding: 16px;
+  }
+
+  .hero {
+    padding: 32px 24px 24px;
+    border-radius: 16px;
+  }
+
+  .Signin h1 {
+    font-size: 26px;
+  }
+}
