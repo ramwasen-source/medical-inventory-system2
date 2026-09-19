@@ -81,7 +81,7 @@ git clone https://github.com/ramwasen-source/medical-inventory-system2.git
 Go inside the project folder:
 
 ```bash
-cd Medical-Inventory-System
+cd Medical-Inventory-System2
 ```
 
 ---
