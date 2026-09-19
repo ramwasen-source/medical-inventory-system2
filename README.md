@@ -248,9 +248,6 @@ Then go to the backend folder:
 ```bash
 cd backend
 ```
-Inside backend create `.env`:
-backend/.env
-
 Add:
 DB_PASSWORD=YOUR_SQL_SERVER_PASSWORD
 JWT_SECRET=medical_inventory_secret_2026
