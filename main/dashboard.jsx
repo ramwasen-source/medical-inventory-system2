@@ -88,10 +88,9 @@ const menuItems = [
 
 function Dashboard() {
   const [data, setData] = useState([]);
-  const [searchText, setSearchText] =
-    useState('');
-  const [typeFilter, setTypeFilter] =
-    useState('All');
+  const [recentIssues, setRecentIssues] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [typeFilter, setTypeFilter] = useState('All');
 
   const fetchItems = async () => {
     try {
@@ -126,8 +125,42 @@ function Dashboard() {
     }
   };
 
+  const fetchRecentIssues = async () => {
+    try {
+      const token =
+        localStorage.getItem('token');
+
+      const response = await fetch(
+        'http://localhost:5000/api/inventory/recent-issues',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const result =
+        await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message ||
+            'Failed to load recent issues'
+        );
+      }
+
+      setRecentIssues(result);
+    } catch (error) {
+      message.error(
+        error.message ||
+          'Failed to load recent issues'
+      );
+    }
+  };
+
   useEffect(() => {
     fetchItems();
+    fetchRecentIssues();
   }, []);
 
   const totalItems = data.length;
@@ -270,6 +303,41 @@ function Dashboard() {
     },
   ];
 
+  const recentIssueColumns = [
+    {
+      title: 'No.',
+      key: 'number',
+      render: (_, __, index) =>
+        index + 1,
+    },
+
+    {
+      title: 'Item Name',
+      dataIndex: 'Name',
+      key: 'Name',
+    },
+
+    {
+      title: 'Category',
+      dataIndex: 'Category',
+      key: 'Category',
+    },
+
+    {
+      title: 'Quantity Issued',
+      dataIndex: 'QuantityIssued',
+      key: 'QuantityIssued',
+    },
+
+    {
+      title: 'Date',
+      dataIndex: 'CreatedAt',
+      key: 'CreatedAt',
+      render: (date) =>
+        new Date(date).toLocaleString(),
+    },
+  ];
+
   const handlePrint = () => {
     window.print();
   };
@@ -406,6 +474,18 @@ function Dashboard() {
           pagination={false}
         />
       </Card>
+
+      <Card
+        title="Recently Issued"
+        className="dashboard-card"
+      >
+        <Table
+          columns={recentIssueColumns}
+          dataSource={recentIssues}
+          rowKey="Id"
+          pagination={false}
+        />
+      </Card>
     </div>
   );
 }
@@ -441,7 +521,6 @@ function App() {
     },
   } = theme.useToken();
 
-  // Get logged-in user
   const [user, setUser] =
     useState(null);
 
@@ -463,7 +542,6 @@ function App() {
     }
   }, []);
 
-  // Login page
   if (location.pathname === '/login') {
     return (
       <Routes>
@@ -617,4 +695,3 @@ function App() {
 }
 
 export default App;
-

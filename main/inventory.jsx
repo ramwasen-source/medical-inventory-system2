@@ -19,7 +19,12 @@ function Inventory() {
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
+
+  const [isIssueModalOpen, setIsIssueModalOpen] = useState(false);
+  const [issuingItem, setIssuingItem] = useState(null);
+
   const [form] = Form.useForm();
+  const [issueForm] = Form.useForm();
 
   const fetchItems = async () => {
     try {
@@ -62,6 +67,12 @@ function Inventory() {
     });
 
     setIsModalOpen(true);
+  };
+
+  const handleIssue = (item) => {
+    setIssuingItem(item);
+    issueForm.resetFields();
+    setIsIssueModalOpen(true);
   };
 
   const handleCreate = async (values) => {
@@ -130,6 +141,43 @@ function Inventory() {
     } catch (error) {
       message.error(
         error.message || 'Failed to update inventory item'
+      );
+    }
+  };
+
+  const handleIssueSubmit = async (values) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/inventory/${issuingItem.Id}/issue`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            quantity: values.quantity,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      message.success(
+        'Inventory quantity deducted successfully'
+      );
+
+      setIsIssueModalOpen(false);
+      setIssuingItem(null);
+      issueForm.resetFields();
+
+      fetchItems();
+    } catch (error) {
+      message.error(
+        error.message || 'Failed to issue inventory item'
       );
     }
   };
@@ -230,6 +278,15 @@ function Inventory() {
           </Button>
 
           <Button
+            size="small"
+            onClick={() =>
+              handleIssue(record)
+            }
+          >
+            Issue
+          </Button>
+
+          <Button
             danger
             size="small"
             onClick={() =>
@@ -301,6 +358,7 @@ function Inventory() {
         />
       </div>
 
+      {/* ADD / EDIT MODAL */}
       <Modal
         title={
           editingItem
@@ -402,9 +460,83 @@ function Inventory() {
           </Form.Item>
         </Form>
       </Modal>
+
+      {/* ISSUE MODAL */}
+      <Modal
+        title="Issue Medical Supply"
+        open={isIssueModalOpen}
+        onCancel={() => {
+          setIsIssueModalOpen(false);
+          setIssuingItem(null);
+          issueForm.resetFields();
+        }}
+        onOk={() => issueForm.submit()}
+        okText="Issue"
+      >
+        {issuingItem && (
+          <>
+            <p>
+              <strong>Item:</strong>{' '}
+              {issuingItem.Name}
+            </p>
+
+            <p>
+              <strong>Available Quantity:</strong>{' '}
+              {issuingItem.Quantity}
+            </p>
+
+            <Form
+              form={issueForm}
+              layout="vertical"
+              onFinish={handleIssueSubmit}
+            >
+              <Form.Item
+                label="Quantity to Issue"
+                name="quantity"
+                rules={[
+                  {
+                    required: true,
+                    message:
+                      'Please enter quantity to issue',
+                  },
+                  {
+                    type: 'number',
+                    min: 1,
+                    message:
+                      'Quantity must be at least 1',
+                  },
+                  () => ({
+                    validator(_, value) {
+                      if (
+                        value === undefined ||
+                        value <= issuingItem.Quantity
+                      ) {
+                        return Promise.resolve();
+                      }
+
+                      return Promise.reject(
+                        new Error(
+                          'Cannot issue more than available quantity'
+                        )
+                      );
+                    },
+                  }),
+                ]}
+              >
+                <InputNumber
+                  min={1}
+                  max={issuingItem.Quantity}
+                  style={{
+                    width: '100%',
+                  }}
+                />
+              </Form.Item>
+            </Form>
+          </>
+        )}
+      </Modal>
     </>
   );
 }
 
 export default Inventory;
-
