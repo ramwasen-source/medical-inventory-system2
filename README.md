@@ -77,8 +77,9 @@ Run:
 ```bash
 git clone https://github.com/ramwasen-source/medical-inventory-system2.git
 ```
-
+to inside the folder drag the mouse in the current folder/path and click ctrl+left click
 Go inside the project folder:
+
 
 ```bash
 cd Medical-Inventory-System2
@@ -114,13 +115,6 @@ npm install
 
 This will install the required backend dependencies.
 
-After installation, go back to the main project folder:
-
-```bash
-cd ..
-```
-
----
 
 # 5. Set Up the SQL Server Database
 
@@ -242,7 +236,7 @@ Replace `YOUR_SQL_SERVER_PASSWORD` with the password of your `sa` account.
 # 6. Start the Backend
 
 Open a terminal in VS Code.
-
+ and 
 Go to the project folder:
 
 ```bash
