@@ -248,6 +248,12 @@ Then go to the backend folder:
 ```bash
 cd backend
 ```
+Inside backend create `.env`:
+backend/.env
+
+Add:
+DB_PASSWORD=YOUR_SQL_SERVER_PASSWORD
+JWT_SECRET=medical_inventory_secret_2026
 
 Run:
 
@@ -418,3 +424,7 @@ Implementing the Create, Retrieve, Update, and Delete functions was also a chall
 Another challenge I encountered was linking the project to GitHub. GitHub required several steps to properly connect the local project to the repository. I had to learn how to connect VS Code to Git using Git commands, initialize the repository, add and commit the files, connect it to the GitHub repository, and push the changes.
 
 This was also my first time working with Git commands, so I had to troubleshoot some issues while setting it up.
+
+### 7. Testing the Project
+Implementing the testing phase is very challenging. Following the instruction using only the readme.md is quite challenging. I have encountered a lot of bugs and error that needed tobe address so that other user can finally test the product without having any problem.
+
