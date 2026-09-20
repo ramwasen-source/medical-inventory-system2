@@ -225,7 +225,6 @@ Add:
 
 ```env
 DB_PASSWORD=YOUR_SQL_SERVER_PASSWORD
-JWT_SECRET=medical_inventory_secret_2026
 ```
 
 Replace `YOUR_SQL_SERVER_PASSWORD` with the password of your `sa` account.
